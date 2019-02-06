@@ -4,7 +4,16 @@ import * as acions from '../actions';
 import {bindActionCreators} from 'redux';
 import JsonService from '../service/jsonService';
 
-const Counter = ({counter, inc, dec, rst, upl, dld}) => {
+const Counter = ({counter, inc, dec, rst, upl}) => {
+
+    const dld =  async ()=>{
+        
+        const jsonService = new JsonService();
+        const id = await jsonService.getLastId()+1;
+        const data = {saved:counter, id: id};
+        jsonService.postData(data);
+    }
+
     return(
         <div className="container">
             <div className="counter-wrapper">
@@ -51,14 +60,7 @@ const mapDispatchToProps=(dispatch,state) => {
                 });
             await upl(value);
         },
-        dld:  async ()=>{
-            console.dir(state);
-            debugger;
-            const jsonService = new JsonService();
-            const id = await jsonService.getLastId()+1;
-            const data = {saved: state.counter, id: id};
-            jsonService.postData(data);
-        }
+        
     }
 }
 
